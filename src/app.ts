@@ -6,7 +6,7 @@ import { Routes } from './routes';
 class App {
     public app: express.Application;
     public route: Routes = new Routes();
-    public mongoUrl: string = 'mongodb+srv://root:root@cluster0.wgg6ppt.mongodb.net/?retryWrites=true&w=majority';
+    public mongoUrl: string = 'http://localhost:27017/vehicleDB';
 
     constructor() {
         this.app = express();
