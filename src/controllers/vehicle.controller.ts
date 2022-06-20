@@ -3,12 +3,12 @@ import { Request, Response } from 'express';
 
 
 export class VehicleController {
-    public vehicleService: VehicleService = new VehicleService();
-    constructor() {}
+    constructor() {
+    }
 
-    public async getAllVehiclesMake (_req: Request, res: Response) {
-
-        const vehicleResponse  =  await this.vehicleService.getAllVehiclesMakes;
+    public async getAllVehiclesMake (req: Request, res: Response) {
+        const vehicleService = new VehicleService();
+        const vehicleResponse  =  await vehicleService.getAllVehiclesTypesByMake();
         res.json(vehicleResponse);
     }
 
