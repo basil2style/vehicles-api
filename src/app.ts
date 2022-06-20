@@ -6,13 +6,13 @@ import { Routes } from './routes';
 class App {
     public app: express.Application;
     public route: Routes = new Routes();
-    public mongoUrl: string = 'mongodb://localhost/todoDb';
+    public mongoUrl: string = 'mongodb+srv://root:root@cluster0.wgg6ppt.mongodb.net/?retryWrites=true&w=majority';
 
     constructor() {
         this.app = express();
         this.config();
         this.route.routes(this.app);
-        // this.mongoSetup();
+        this.mongoSetup();
     }
 
     private config(): void {

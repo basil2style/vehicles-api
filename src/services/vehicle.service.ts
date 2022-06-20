@@ -1,5 +1,11 @@
 import axios from "axios";
 import * as convert from "xml-js";
+import * as mongoose from 'mongoose';
+
+import { VehicleSchema } from '../models/vehicle';
+
+
+const Vehicle = mongoose.model('Vehicle', VehicleSchema);
 
 const URL: string = "https://vpic.nhtsa.dot.gov/api/vehicles";
 
@@ -60,8 +66,11 @@ export class VehicleService {
           vehicleResponse.push(vehicleTypes);
         }
       }
-
+      
       const responseData = await Promise.all(vehicleResponse);
+      await saveToDb(responseData);
+    
+
       return responseData;
     })
   }
@@ -69,7 +78,7 @@ export class VehicleService {
 }
 
 function getVehicleResult<T>(result: PromiseSettledResult<T>): T | undefined {
-  console.log(result.status);
+  
   if (result.status === 'fulfilled') return result.value;
 }
 
@@ -80,6 +89,13 @@ function vehicleMakesDTO(vehicleMakes) {
       makeId: vehicleMake.Make_ID["_text"],
       makeName: vehicleMake.Make_Name["_text"]
     }
+  })
+}
+
+async function saveToDb(vehicleData){
+  vehicleData.map((vehicle) => {
+    const saveToVehicle = new Vehicle(vehicle);
+    saveToVehicle.save()  
   })
 }
 
@@ -109,8 +125,3 @@ export interface IVehicleTypes {
   typeName: string
 }
 
-function delayPromise(ms) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, ms);
-  });
-}
